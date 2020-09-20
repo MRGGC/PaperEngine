@@ -6,8 +6,8 @@ project "PaperEngine"
 	targetdir ("../build/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("../build/bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files { "%{prj.name}/src/**.h", "%{prj.name}/src/**.cpp" }
-	includedirs { "%{prj.name}/include/", "%{prj.name}/lib/spdlog/include/" }
+	files { "src/**.h", "src/**.cpp", "lib/stb_image/**.h", "lib/stb_image/**.cpp" }
+	includedirs { "src/", "include/", "lib/spdlog/include/" }
 
 	filter "system:windows"
 		cppdialect "C++17"

@@ -20,3 +20,5 @@
 #else
 	#define PAPER_API IMPORT
 #endif
+
+#define BIT(x) (1 << x)

@@ -6,10 +6,8 @@ int main(int argc, const char* argv[])
 {
 	Paper::Log::Init();
 
-	PAPER_CORE_WARN("Initialized Core Log!");
-
-	int a = 20;
-	PAPER_CLIENT_ERROR("Ola, Var={0}", a);
+	PAPER_CORE_INFO("Initialized Core Log!");
+	PAPER_CLIENT_INFO("Initialized Client Log!");
 
 	auto app = Paper::CreateApplication();
 	app->Run();
