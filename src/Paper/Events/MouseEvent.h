@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Paper
 {
 	class PAPER_API MouseMovedEvent : public Event

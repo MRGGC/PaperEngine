@@ -2,8 +2,6 @@
 
 #include "Event.h"
 
-#include <sstream>
-
 namespace Paper
 {
 	class PAPER_API WindowResizeEvent : public Event

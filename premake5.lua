@@ -9,6 +9,9 @@ project "PaperEngine"
 	files { "src/**.h", "src/**.cpp", "lib/stb_image/**.h", "lib/stb_image/**.cpp" }
 	includedirs { "src/", "include/", "lib/spdlog/include/" }
 
+	pchheader "p_pch.h"
+	pchsource "src/p_pch.cpp"
+
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
