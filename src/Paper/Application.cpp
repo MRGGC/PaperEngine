@@ -6,16 +6,11 @@
 
 
 namespace Paper {
-	
-	bool test(WindowResizeEvent& wre)
-	{
-		PAPER_CLIENT_TRACE(wre);
-		return true;
-	}
 
 	Application::Application()
 	{
-
+		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Running = true;
 	}
 
 	Application::~Application()
@@ -25,11 +20,9 @@ namespace Paper {
 
 	void Application::Run()
 	{
-		WindowResizeEvent e(100, 120);
-
-		EventDispatcher ed(e);
-		ed.Dispatch<WindowResizeEvent>(test);
-
-		while (true);
+		while (m_Running)
+		{
+			m_Window->OnUpdate();
+		}
 	}
 }

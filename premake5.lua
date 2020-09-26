@@ -3,14 +3,23 @@ project "PaperEngine"
 	kind "SharedLib"
 	language "C++"
 
-	targetdir ("../build/bin/" .. outputdir .. "/%{prj.name}")
-	objdir ("../build/bin-int/" .. outputdir .. "/%{prj.name}")
+	targetdir ("%{wks.location}/build/bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("%{wks.location}/build/bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files { "src/**.h", "src/**.cpp", "lib/stb_image/**.h", "lib/stb_image/**.cpp" }
-	includedirs { "src/", "include/", "lib/spdlog/include/" }
+	IncludeDir = {}
+	IncludeDir["glfw"] = "lib/glfw/include"
+	IncludeDir["spdlog"] = "lib/spdlog/include"
 
 	pchheader "p_pch.h"
 	pchsource "src/p_pch.cpp"
+
+	files { "src/**.h", "src/**.cpp", "lib/stb_image/**.h", "lib/stb_image/**.cpp" }
+	includedirs { "src/", "include/", "%{IncludeDir.spdlog}", "%{IncludeDir.glfw}" }
+
+	filter "system:windows"
+		links { "OpenGL32" }
+	filter "system:not windows"
+		links { "GL", "dl", "m", "X11" }
 
 	filter "system:windows"
 		cppdialect "C++17"
@@ -23,8 +32,9 @@ project "PaperEngine"
 
 	postbuildcommands
 	{
-		("{COPY} %{cfg.buildtarget.relpath} ../build/bin/" .. outputdir .. "/Sandbox/")
+		("{COPY} %{cfg.buildtarget.relpath} %{wks.location}/build/bin/" .. outputdir .. "/Sandbox/")
 	}
+	postbuildmessage "Copied libs"
 
 	filter "configurations:Debug"
 		defines "PAPER_DEBUG"
@@ -33,3 +43,6 @@ project "PaperEngine"
 	filter "configurations:Release"
 		defines "PAPER_RELEASE"
 		optimize "On"
+
+	include "lib/glfw"
+	links { "glfw" }
