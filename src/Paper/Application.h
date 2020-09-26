@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Window.h"
+#include <Paper/Events/ApplicationEvent.h>
 
 namespace Paper
 {
@@ -12,6 +13,9 @@ namespace Paper
 		virtual ~Application();
 
 		void Run();
+		void OnEvent(Event& e);
+
+		bool OnWindowClose(WindowCloseEvent& e);
 	private:
 		std::unique_ptr<Window> m_Window;
 		bool m_Running = false;

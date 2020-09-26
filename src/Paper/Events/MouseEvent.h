@@ -78,6 +78,7 @@ namespace Paper
 
 	class PAPER_API MouseButtonReleasedEvent : public MouseButtonEvent
 	{
+	public:
 		MouseButtonReleasedEvent(int btn) : MouseButtonEvent(btn) {}
 
 		std::string ToString() const override
