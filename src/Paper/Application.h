@@ -2,6 +2,7 @@
 
 #include "Core.h"
 #include "Window.h"
+#include "LayerStack.h"
 #include <Paper/Events/ApplicationEvent.h>
 
 namespace Paper
@@ -16,8 +17,12 @@ namespace Paper
 		void OnEvent(Event& e);
 
 		bool OnWindowClose(WindowCloseEvent& e);
+
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* layer);
 	private:
 		std::unique_ptr<Window> m_Window;
+		LayerStack m_LayerStack;
 		bool m_Running = false;
 	};
 

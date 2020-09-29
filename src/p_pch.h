@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <utility>
 #include <functional>
+#include <iterator>
 
 #include <signal.h>
 
