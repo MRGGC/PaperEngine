@@ -9,12 +9,13 @@ project "PaperEngine"
 	IncludeDir = {}
 	IncludeDir["glfw"] = "lib/glfw/include"
 	IncludeDir["spdlog"] = "lib/spdlog/include"
+	IncludeDir["glad"] = "lib/glad/include"
 
 	pchheader "p_pch.h"
 	pchsource "src/p_pch.cpp"
 
 	files { "src/**.h", "src/**.cpp", "lib/stb_image/**.h", "lib/stb_image/**.cpp" }
-	includedirs { "src/", "include/", "%{IncludeDir.spdlog}", "%{IncludeDir.glfw}" }
+	includedirs { "src/", "include/", "%{IncludeDir.spdlog}", "%{IncludeDir.glfw}", "%{IncludeDir.glad}" }
 
 	filter "system:windows"
 		links { "OpenGL32" }
@@ -28,7 +29,7 @@ project "PaperEngine"
 		defines { "_WINDLL" }
 	filter { }
 
-	defines { "PENGINE_BUILD_SO" }
+	defines { "PENGINE_BUILD_SO", "GLFW_INCLUDE_NONE" }
 
 	postbuildcommands
 	{
@@ -45,4 +46,4 @@ project "PaperEngine"
 		optimize "On"
 
 	include "lib/glfw"
-	links { "glfw" }
+	include "lib/glad"
