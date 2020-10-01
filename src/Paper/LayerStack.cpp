@@ -16,11 +16,13 @@ namespace Paper
 
 	void LayerStack::PushLayer(Layer* layer)
 	{
+		layer->OnAttach();
 		m_LayerInsert = m_Layers.emplace(m_LayerInsert, layer);
 	}
 
 	void LayerStack::PushOverlay(Layer* overlay)
 	{
+		overlay->OnAttach();
 		m_Layers.emplace_back(overlay);
 	}
 
@@ -29,6 +31,7 @@ namespace Paper
 		auto it = std::find(m_Layers.begin(), m_Layers.end(), layer);
 		if (it != m_Layers.end())
 		{
+			layer->OnDetach();
 			m_Layers.erase(it);
 			m_LayerInsert--;
 		}
@@ -39,6 +42,9 @@ namespace Paper
 
 		auto it = std::find(m_Layers.begin(), m_Layers.end(), layer);
 		if (it != m_Layers.end())
+		{
+			layer->OnDetach();
 			m_Layers.erase(it);
+		}
 	}
 }

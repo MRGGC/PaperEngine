@@ -2,6 +2,10 @@
 	path = lib/glfw
 	url = https://github.com/MRGGC/glfw.git
 
+[submodule "lib/imgui"]
+	path = lib/imgui
+	url = https://github.com/MRGGC/imgui.git
+
 [submodule "lib/spdlog"]
 	path = lib/spdlog
 	url = https://github.com/gabime/spdlog.git

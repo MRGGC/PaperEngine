@@ -10,12 +10,13 @@ project "PaperEngine"
 	IncludeDir["glfw"] = "lib/glfw/include"
 	IncludeDir["spdlog"] = "lib/spdlog/include"
 	IncludeDir["glad"] = "lib/glad/include"
+	IncludeDir["imgui"] = "lib/imgui"
 
 	pchheader "p_pch.h"
 	pchsource "src/p_pch.cpp"
 
 	files { "src/**.h", "src/**.cpp", "lib/stb_image/**.h", "lib/stb_image/**.cpp" }
-	includedirs { "src/", "include/", "%{IncludeDir.spdlog}", "%{IncludeDir.glfw}", "%{IncludeDir.glad}" }
+	includedirs { "src/", "include/", "%{IncludeDir.spdlog}", "%{IncludeDir.glfw}", "%{IncludeDir.glad}", "%{IncludeDir.imgui}" }
 
 	filter "system:windows"
 		links { "OpenGL32" }
@@ -47,3 +48,4 @@ project "PaperEngine"
 
 	include "lib/glfw"
 	include "lib/glad"
+	include "lib/imgui"
