@@ -2,6 +2,7 @@ project "PaperEngine"
 
 	kind "SharedLib"
 	language "C++"
+	staticruntime "off"
 
 	targetdir ("%{wks.location}/build/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/build/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -40,10 +41,12 @@ project "PaperEngine"
 
 	filter "configurations:Debug"
 		defines "PAPER_DEBUG"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "PAPER_RELEASE"
+		runtime "Release"
 		optimize "On"
 
 	include "lib/glfw"
