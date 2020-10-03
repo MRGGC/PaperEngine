@@ -28,8 +28,8 @@ namespace Paper
 #define PAPER_CORE_FATAL(...)   Paper::Log::GetCoreLogger()->fatal(__VA_ARGS__)
 
 // Client Log Macros
-#define PAPER_CLIENT_ERROR(...)   Paper::Log::GetClientLogger()->error(__VA_ARGS__)
-#define PAPER_CLIENT_WARN(...)    Paper::Log::GetClientLogger()->warn(__VA_ARGS__)
-#define PAPER_CLIENT_INFO(...)    Paper::Log::GetClientLogger()->info(__VA_ARGS__)
-#define PAPER_CLIENT_TRACE(...)   Paper::Log::GetClientLogger()->trace(__VA_ARGS__)
-#define PAPER_CLIENT_FATAL(...)   Paper::Log::GetClientLogger()->fatal(__VA_ARGS__)
+#define PAPER_ERROR(...)   Paper::Log::GetClientLogger()->error(__VA_ARGS__)
+#define PAPER_WARN(...)    Paper::Log::GetClientLogger()->warn(__VA_ARGS__)
+#define PAPER_INFO(...)    Paper::Log::GetClientLogger()->info(__VA_ARGS__)
+#define PAPER_TRACE(...)   Paper::Log::GetClientLogger()->trace(__VA_ARGS__)
+#define PAPER_FATAL(...)   Paper::Log::GetClientLogger()->fatal(__VA_ARGS__)

@@ -7,7 +7,7 @@ int main(int argc, const char* argv[])
 	Paper::Log::Init();
 
 	PAPER_CORE_INFO("Initialized Core Log!");
-	PAPER_CLIENT_INFO("Initialized Client Log!");
+	PAPER_INFO("Initialized Client Log!");
 
 	auto app = Paper::CreateApplication();
 	app->Run();
