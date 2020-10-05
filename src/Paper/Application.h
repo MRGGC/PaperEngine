@@ -3,7 +3,8 @@
 #include "Core.h"
 #include "Window.h"
 #include "LayerStack.h"
-#include <Paper/Events/ApplicationEvent.h>
+#include "ImGui/ImGuiLayer.h"
+#include "Paper/Events/ApplicationEvent.h"
 
 namespace Paper
 {
@@ -25,6 +26,7 @@ namespace Paper
 		inline Window& GetWindow() { return *m_Window; }
 	private:
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_LayerStack;
 		bool m_Running = false;
 	private:

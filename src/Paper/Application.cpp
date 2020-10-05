@@ -18,6 +18,9 @@ namespace Paper {
 
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(PAPER_BIND_EVENT_FN(Application::OnEvent));
+
+		m_ImGuiLayer = new ImGuiLayer();
+
 		m_Running = true;
 	}
 
@@ -65,6 +68,11 @@ namespace Paper {
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
+
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_LayerStack)
+				layer->OnImGuiRenderer();
+			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
 		}
