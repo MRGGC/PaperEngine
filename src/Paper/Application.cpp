@@ -13,6 +13,7 @@ namespace Paper {
 
 	Application::Application()
 	{
+		// TODO: Only 1 instance of application is possible right now. Change it!
 		PAPER_CORE_ASSERT(!s_Instance, "Paper Application already Exists!");
 		s_Instance = this;
 

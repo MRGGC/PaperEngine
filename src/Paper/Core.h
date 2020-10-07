@@ -21,10 +21,14 @@
 	#define DEBUG_BREAK raise(SIGTRAP)
 #endif
 
-#ifdef PENGINE_BUILD_SO
-	#define PAPER_API EXPORT
+#if defined(PENGINE_DYNAMIC_LINK)
+	#ifdef PENGINE_BUILD
+		#define PAPER_API EXPORT
+	#else
+		#define PAPER_API IMPORT
+	#endif
 #else
-	#define PAPER_API IMPORT
+	#define PAPER_API
 #endif
 
 #ifdef PAPER_ENABLE_ASSERTS

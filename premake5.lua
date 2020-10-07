@@ -1,8 +1,9 @@
 project "PaperEngine"
 
-	kind "SharedLib"
+	kind "StaticLib"
 	language "C++"
-	staticruntime "off"
+	cppdialect "C++17"
+	staticruntime "on"
 
 	targetdir ("%{wks.location}/build/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/build/bin-int/" .. outputdir .. "/%{prj.name}")
@@ -26,13 +27,12 @@ project "PaperEngine"
 		links { "GL", "dl", "m", "X11" }
 
 	filter "system:windows"
-		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
 		defines { "_WINDLL" }
 	filter { }
 
-	defines { "PENGINE_BUILD_SO", "GLFW_INCLUDE_NONE" }
+	defines { "PENGINE_BUILD", "PENGINE_STATIC_LINK", "GLFW_INCLUDE_NONE" }
 
 	postbuildcommands
 	{
@@ -43,13 +43,9 @@ project "PaperEngine"
 	filter "configurations:Debug"
 		defines "PAPER_DEBUG"
 		runtime "Debug"
-		symbols "On"
+		symbols "on"
 
 	filter "configurations:Release"
 		defines "PAPER_RELEASE"
 		runtime "Release"
-		optimize "On"
-
-	include "lib/glfw"
-	include "lib/glad"
-	include "lib/imgui"
+		optimize "on"
