@@ -1,11 +1,11 @@
 #include "p_pch.h"
 #include "WindowWindows.h"
 
+#include "Platform/OpenGL/OpenGLContext.h"
+
 #include "Paper/Events/ApplicationEvent.h"
 #include "Paper/Events/KeyEvent.h"
 #include "Paper/Events/MouseEvent.h"
-
-#include <glad/glad.h>
 
 namespace Paper
 {
@@ -50,11 +50,11 @@ namespace Paper
 		}
 
 		m_Window = glfwCreateWindow((int)m_Data.Width, (int)m_Data.Height, m_Data.Title.c_str(), NULL, NULL);
-		glfwMakeContextCurrent(m_Window);
-		glfwSetWindowUserPointer(m_Window, &m_Data);
 
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		PAPER_CORE_ASSERT(status, "Failed to initialize Glad");
+		m_Context = new OpenGLContext(m_Window);
+		m_Context->Init();
+
+		glfwSetWindowUserPointer(m_Window, &m_Data);
 
 		SetVSync(true);
 
@@ -141,7 +141,7 @@ namespace Paper
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffers();
 	}
 
 	void WindowsWindow::SetVSync(bool enabled)

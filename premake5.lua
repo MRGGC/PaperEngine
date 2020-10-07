@@ -1,5 +1,8 @@
-project "PaperEngine"
+include "lib/glfw"
+include "lib/glad"
+include "lib/imgui"
 
+project "PaperEngine"
 	kind "StaticLib"
 	language "C++"
 	cppdialect "C++17"
