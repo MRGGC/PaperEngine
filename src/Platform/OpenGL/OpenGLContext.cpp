@@ -17,6 +17,11 @@ namespace Paper
 		glfwMakeContextCurrent(m_WindowHandle);
 		int success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		PAPER_CORE_ASSERT(success, "Glad not Initialized!");
+
+		PAPER_CORE_INFO("OpenGL Renderer:");
+		PAPER_CORE_INFO("--Vendor: {0}", glGetString(GL_VENDOR));
+		PAPER_CORE_INFO("--Renderer: {0}", glGetString(GL_RENDERER));
+		PAPER_CORE_INFO("--Version: {0}", glGetString(GL_VERSION));
 	}
 
 	void OpenGLContext::SwapBuffers()
