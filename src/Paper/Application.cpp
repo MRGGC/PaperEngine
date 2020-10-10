@@ -5,7 +5,7 @@
 #include <Paper/Events/ApplicationEvent.h>
 #include "Paper/Input.h"
 
-#include <glad/glad.h>
+#include "Renderer/Renderer.h"
 
 namespace Paper {
 
@@ -178,17 +178,18 @@ namespace Paper {
 	{
 		while (m_Running)
 		{
-			glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::SetClearColor({0.2f, 0.2f, 0.2f, 1.0f});
+			RenderCommand::Clear();
 
-			m_SquareVAO->Bind();
-			m_SquareShader->Bind();
-			glDrawElements(GL_TRIANGLES, m_SquareVAO->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::BeginScene();
+			{
+				m_SquareShader->Bind();
+				Renderer::Submit(m_SquareVAO);
 
-			m_VertexArray->Bind();
-			m_Shader->Bind();
-			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
-			m_VertexArray->Unbind();
+				m_Shader->Bind();
+				Renderer::Submit(m_VertexArray);
+			}
+			Renderer::EndScene();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
