@@ -35,7 +35,7 @@ project "PaperEngine"
 		defines { "_WINDLL" }
 	filter { }
 
-	defines { "PENGINE_BUILD", "PENGINE_STATIC_LINK", "GLFW_INCLUDE_NONE" }
+	defines { "PENGINE_BUILD", "PAPER_ENABLE_ASSERTS", "PENGINE_STATIC_LINK", "GLFW_INCLUDE_NONE" }
 
 	postbuildcommands
 	{

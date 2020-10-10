@@ -4,7 +4,7 @@
 
 namespace Paper
 {
-	class WindowsInput : public Input
+	class LinuxInput : public Input
 	{
 	protected:
 		virtual bool IsKeyPressedImpl(int keycode) override;
