@@ -8,6 +8,7 @@
 
 #include "Paper/Renderer/Shader.h"
 #include "Paper/Renderer/Buffer.h"
+#include "Paper/Renderer/VertexArray.h"
 
 namespace Paper
 {
@@ -33,10 +34,11 @@ namespace Paper
 		LayerStack m_LayerStack;
 		bool m_Running = false;
 
-		unsigned int m_VertexArray;
-		std::unique_ptr<Shader> m_Shader;
-		std::unique_ptr<VertexBuffer> m_VertexBuffer;
-		std::unique_ptr<IndexBuffer> m_IndexBuffer;
+		std::shared_ptr<VertexArray> m_VertexArray;
+		std::shared_ptr<Shader> m_Shader;
+
+		std::shared_ptr<VertexArray> m_SquareVAO;
+		std::shared_ptr<Shader> m_SquareShader;
 	private:
 		static Application* s_Instance;
 	};

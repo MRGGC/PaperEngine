@@ -11,27 +11,6 @@ namespace Paper {
 
 	Application* Application::s_Instance = nullptr;
 
-	static GLenum ShaderDataTypeToOpenGLBaseType(const ShaderDataType& type)
-	{
-		switch (type)
-		{
-			case ShaderDataType::Float:     return GL_FLOAT;
-			case ShaderDataType::Float2:    return GL_FLOAT;
-			case ShaderDataType::Float3:    return GL_FLOAT;
-			case ShaderDataType::Float4:    return GL_FLOAT;
-			case ShaderDataType::Mat3:      return GL_FLOAT;
-			case ShaderDataType::Mat4:      return GL_FLOAT;
-			case ShaderDataType::Int:       return GL_INT;
-			case ShaderDataType::Int2:      return GL_INT;
-			case ShaderDataType::Int3:      return GL_INT;
-			case ShaderDataType::Int4:      return GL_INT;
-			case ShaderDataType::Bool:      return GL_BOOL;
-		}
-
-		PAPER_CORE_ASSERT(false, "Unknown ShaderDataType!");
-		return 0;
-	}
-
 	Application::Application()
 	{
 		// TODO: Only 1 instance of application is possible right now. Change it!
@@ -45,48 +24,57 @@ namespace Paper {
 
 		m_Running = true;
 
-		glGenVertexArrays(1, &m_VertexArray);
-		glBindVertexArray(m_VertexArray);
-
 		float vertecies[3*7] = {
 			-0.5f, -0.5f, 0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
 			0.0f, 0.5f, 0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
 			0.5f, -0.5f, 0.0f, 0.8f, 0.8f, 0.2f, 1.0f
 		};
 
-		m_VertexBuffer.reset(VertexBuffer::Create(vertecies, sizeof(vertecies)));
-		m_VertexBuffer->Bind();
+		m_VertexArray.reset(VertexArray::Create());
 
-		{
-			BufferLayout layout = {
-				{ ShaderDataType::Float3, "a_Position" },
-				{ ShaderDataType::Float4, "a_Color" }
-			};
+		std::shared_ptr<VertexBuffer> vertexBuffer;
+		vertexBuffer.reset(VertexBuffer::Create(vertecies, sizeof(vertecies)));
+		vertexBuffer->Bind();
 
-			m_VertexBuffer->SetLayout(layout);
-		}
+		BufferLayout layout = {
+			{ ShaderDataType::Float3, "a_Position" },
+			{ ShaderDataType::Float4, "a_Color" }
+		};
 
-		uint32_t index = 0;
-		const auto& layout = m_VertexBuffer->GetLayout();
+		vertexBuffer->SetLayout(layout);
 
-		for (const auto& element : layout)
-		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(
-				index, 
-				element.GetElementCount(), 
-				ShaderDataTypeToOpenGLBaseType(element.Type), 
-				element.Normalized ? GL_TRUE : GL_FALSE, 
-				layout.GetStride(), 
-				(const void*) element.Offset
-			);
-
-			index++;
-		}
+		m_VertexArray->AddVertexBuffer(vertexBuffer);
 
 		uint32_t indices[3] = { 0, 1, 2 };
-		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices)/sizeof(uint32_t)));
-		m_IndexBuffer->Bind();
+		std::shared_ptr<IndexBuffer> indexBuffer;
+		indexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices)/sizeof(uint32_t)));
+		indexBuffer->Bind();
+
+		m_VertexArray->SetIndexBuffer(indexBuffer);
+
+
+		m_SquareVAO.reset(VertexArray::Create());
+
+		float square_vertecies[3*4] = {
+			-0.75f, -0.75f, 0.0f,
+			0.75f, -0.75f, 0.0f,
+			0.75f, 0.75f, 0.0f,
+			-0.75f, 0.75f, 0.0f
+		};
+
+		std::shared_ptr<VertexBuffer> squareVBO;
+		squareVBO.reset(VertexBuffer::Create(square_vertecies, sizeof(square_vertecies)));
+		BufferLayout SquareBufferLayout = {
+			{ ShaderDataType::Float3, "a_Position" }
+		};
+		squareVBO->SetLayout(SquareBufferLayout);
+
+		m_SquareVAO->AddVertexBuffer(squareVBO);
+
+		uint32_t square_indices[6] = { 0, 1, 2, 2, 3, 0 };
+		std::shared_ptr<IndexBuffer> squareIBO;
+		squareIBO.reset(IndexBuffer::Create(square_indices, sizeof(square_indices)/sizeof(uint32_t)));
+		m_SquareVAO->SetIndexBuffer(squareIBO);
 
 		std::string vertexSrc = R"(
 			#version 330 core
@@ -120,6 +108,35 @@ namespace Paper {
 
 		m_Shader = std::make_unique<Shader>(vertexSrc, fragmentSrc);
 		m_Shader->Bind();
+
+		std::string vertexSrc2 = R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 a_Position;
+			out vec3 v_Position;
+
+			void main()
+			{
+				v_Position = a_Position;
+				gl_Position = vec4(a_Position, 1.0);
+			}
+		)";
+
+		std::string fragmentSrc2 = R"(
+			#version 330 core
+
+			out vec4 color;
+			in vec3 v_Position;
+
+			void main()
+			{
+				color = vec4(v_Position * 0.5 + 0.5, 1.0);
+				// color = vec4(0.0, 0.0, 1.0, 1.0);
+			}
+		)";
+
+		m_SquareShader = std::make_unique<Shader>(vertexSrc2, fragmentSrc2);
+		m_SquareShader->Bind();
 	}
 
 	Application::~Application()
@@ -164,8 +181,14 @@ namespace Paper {
 			glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			glBindVertexArray(m_VertexArray);
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			m_SquareVAO->Bind();
+			m_SquareShader->Bind();
+			glDrawElements(GL_TRIANGLES, m_SquareVAO->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+
+			m_VertexArray->Bind();
+			m_Shader->Bind();
+			glDrawElements(GL_TRIANGLES, m_VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
+			m_VertexArray->Unbind();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();

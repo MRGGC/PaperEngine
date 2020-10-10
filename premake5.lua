@@ -21,13 +21,8 @@ project "PaperEngine"
 	pchheader "p_pch.h"
 	pchsource "src/p_pch.cpp"
 
-	files { "src/**.h", "src/**.cpp", "lib/stb_image/**.h", "lib/stb_image/**.cpp", "lib/glm/glm/**.hpp", "lib/glm/glm/**.inl" }
+	files { "src/**.h", "src/**.cpp", "lib/glm/glm/**.hpp", "lib/glm/glm/**.inl" }
 	includedirs { "src/", "include/", "%{IncludeDir.spdlog}", "%{IncludeDir.glfw}", "%{IncludeDir.glad}", "%{IncludeDir.imgui}", "%{IncludeDir.glm}" }
-
-	filter "system:windows"
-		links { "OpenGL32" }
-	filter "system:not windows"
-		links { "GL", "dl", "m", "X11" }
 
 	filter "system:windows"
 		staticruntime "On"
