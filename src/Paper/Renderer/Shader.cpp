@@ -102,6 +102,13 @@ namespace Paper
 		glDeleteProgram(m_RendererID);
 	}
 
+	void Shader::SetUniformMat4(const std::string& name, const glm::mat4& matrix)
+	{
+		GLint loc = glGetUniformLocation(m_RendererID, name.c_str()); 
+		PAPER_CORE_ASSERT(loc+1, "Couldn't find the Mat4 Uniform");
+		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
+	}
+
 	void Shader::Bind() const
 	{
 		glUseProgram(m_RendererID);

@@ -10,6 +10,8 @@
 #include "Paper/Renderer/Buffer.h"
 #include "Paper/Renderer/VertexArray.h"
 
+#include "Paper/Renderer/OrthographicCamera.h"
+
 namespace Paper
 {
 	class PAPER_API Application
@@ -39,6 +41,8 @@ namespace Paper
 
 		std::shared_ptr<VertexArray> m_SquareVAO;
 		std::shared_ptr<Shader> m_SquareShader;
+
+		OrthographicCamera m_Camera;
 	private:
 		static Application* s_Instance;
 	};
