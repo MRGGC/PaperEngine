@@ -17,12 +17,13 @@ project "PaperEngine"
 	IncludeDir["glad"] = "lib/glad/include"
 	IncludeDir["imgui"] = "lib/imgui"
 	IncludeDir["glm"] = "lib/glm"
+	IncludeDir["stb_image"] = "lib/stb_image"
 
 	pchheader "p_pch.h"
 	pchsource "src/p_pch.cpp"
 
-	files { "src/**.h", "src/**.cpp", "lib/glm/glm/**.hpp", "lib/glm/glm/**.inl" }
-	includedirs { "src/", "include/", "%{IncludeDir.spdlog}", "%{IncludeDir.glfw}", "%{IncludeDir.glad}", "%{IncludeDir.imgui}", "%{IncludeDir.glm}" }
+	files { "src/**.h", "src/**.cpp", "lib/stb_image/**.cpp", "lib/stb_image/**.h", "lib/glm/glm/**.hpp", "lib/glm/glm/**.inl" }
+	includedirs { "src/", "include/", "%{IncludeDir.spdlog}", "%{IncludeDir.glfw}", "%{IncludeDir.glad}", "%{IncludeDir.imgui}", "%{IncludeDir.glm}", "%{IncludeDir.stb_image}" }
 
 	filter "system:windows"
 		staticruntime "On"

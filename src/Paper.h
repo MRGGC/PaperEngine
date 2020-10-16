@@ -21,6 +21,7 @@
 #include "Paper/Renderer/Buffer.h"
 #include "Paper/Renderer/VertexArray.h"
 #include "Paper/Renderer/Shader.h"
+#include "Paper/Renderer/Texture.h"
 
 #include "Paper/Renderer/OrthographicCamera.h"
 //---------------------------------------
