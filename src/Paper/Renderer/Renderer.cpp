@@ -1,10 +1,11 @@
 #include "p_pch.h"
 
 #include "Renderer.h"
+#include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Paper
 {
-	Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData();
+	Renderer::SceneData* Renderer::s_SceneData = new Renderer::SceneData;
 
 	void Renderer::BeginScene(OrthographicCamera& camera)
 	{
@@ -15,10 +16,11 @@ namespace Paper
 	{
 	}
 
-	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray)
+	void Renderer::Submit(const std::shared_ptr<Shader>& shader, const std::shared_ptr<VertexArray>& vertexArray, const glm::mat4& transform)
 	{
 		shader->Bind();
-		shader->SetUniformMat4("u_VP", s_SceneData->ViewProjectionMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4("u_ViewProjectionMatrix", s_SceneData->ViewProjectionMatrix);
+		std::dynamic_pointer_cast<OpenGLShader>(shader)->SetUniformMat4("u_ModelMatrix", transform);
 
 		vertexArray->Bind();
 		RenderCommand::DrawIndexed(vertexArray);

@@ -2,6 +2,7 @@
 
 #include "p_pch.h"
 #include "Paper/Core.h"
+#include "Paper/Core/Timestep.h"
 #include "Paper/Events/Event.h"
 
 namespace Paper
@@ -14,7 +15,7 @@ namespace Paper
 
 		virtual void OnAttach() {}
 		virtual void OnDetach() {}
-		virtual void OnUpdate() {}
+		virtual void OnUpdate(Timestep dt) {}
 		virtual void OnEvent(Event& e) {}
 		virtual void OnImGuiRenderer() {}
 

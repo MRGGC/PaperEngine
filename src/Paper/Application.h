@@ -6,11 +6,7 @@
 #include "ImGui/ImGuiLayer.h"
 #include "Paper/Events/ApplicationEvent.h"
 
-#include "Paper/Renderer/Shader.h"
-#include "Paper/Renderer/Buffer.h"
-#include "Paper/Renderer/VertexArray.h"
-
-#include "Paper/Renderer/OrthographicCamera.h"
+#include "Paper/Core/Timestep.h"
 
 namespace Paper
 {
@@ -34,15 +30,9 @@ namespace Paper
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_LayerStack;
+
+		float m_LastFrameTime = 0.0f;
 		bool m_Running = false;
-
-		std::shared_ptr<VertexArray> m_VertexArray;
-		std::shared_ptr<Shader> m_Shader;
-
-		std::shared_ptr<VertexArray> m_SquareVAO;
-		std::shared_ptr<Shader> m_SquareShader;
-
-		OrthographicCamera m_Camera;
 	private:
 		static Application* s_Instance;
 	};
