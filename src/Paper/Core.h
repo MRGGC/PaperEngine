@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #if defined(_MSC_VER)
 	//  Microsoft 
 	#define EXPORT __declspec(dllexport)
@@ -42,3 +44,12 @@
 #define BIT(x) (1 << x)
 
 #define PAPER_BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+
+namespace Paper
+{
+	template<typename T>
+	using Scope = std::unique_ptr<T>;
+
+	template<typename T>
+	using Ref = std::shared_ptr<T>;
+}
