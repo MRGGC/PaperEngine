@@ -19,7 +19,8 @@ namespace Paper
 		return 0;
 	}
 
-	OpenGLShader::OpenGLShader(const std::string& vertexSrc, const std::string& fragmentSrc)
+	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
+		: m_Name(name)
 	{
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
@@ -33,6 +34,15 @@ namespace Paper
 		std::string	shaderSource = ReadFile(path);
 		std::unordered_map<GLenum, std::string> shaderSources = PreProcess(shaderSource);
 		Compile(shaderSources);
+
+		// Extract File Name
+		auto lastSlash = path.find_last_of("/\\");
+		lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
+		auto lastDot = path.rfind('.');
+
+		auto count = lastDot == std::string::npos ? path.size() - lastSlash : lastDot - lastSlash;
+
+		m_Name = path.substr(lastSlash, count);
 	}
 
 	OpenGLShader::~OpenGLShader()
@@ -44,9 +54,10 @@ namespace Paper
 	{
 		uint32_t program = glCreateProgram();
 
-		std::vector<GLenum> glShaderIDs;
-		glShaderIDs.reserve(shaderSources.size());
+		PAPER_CORE_ASSERT(shaderSources.size() <= 3, "ShaderSources size is greater than 3!");
+		std::array<GLenum, 3> glShaderIDs;
 
+		int glShaderIDIndex = 0;
 		for (auto& kv : shaderSources)
 		{
 			GLenum type = kv.first;
@@ -80,7 +91,7 @@ namespace Paper
 
 			glAttachShader(program, shader);
 
-			glShaderIDs.emplace_back(shader);
+			glShaderIDs[glShaderIDIndex++] = shader;
 		}
 
 		glLinkProgram(program);
