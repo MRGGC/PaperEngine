@@ -2,8 +2,10 @@
 
 #include "Application.h"
 #include "Log.h"
-#include <Paper/Events/ApplicationEvent.h>
 #include "Paper/Input.h"
+#include "Paper/Events/ApplicationEvent.h"
+
+#include "Paper/Renderer/Renderer.h"
 
 #include <GLFW/glfw3.h> // Temporary: Until Tying Time to the Platform
 
@@ -19,6 +21,8 @@ namespace Paper {
 
 		m_Window = Scope<Window>(Window::Create());
 		m_Window->SetEventCallback(PAPER_BIND_EVENT_FN(Application::OnEvent));
+
+		Renderer::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);

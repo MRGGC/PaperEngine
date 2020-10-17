@@ -10,6 +10,8 @@ namespace Paper
 	class PAPER_API Renderer
 	{
 	public:
+		static void Init();
+
 		// TODO: Take Scene Parameters
 		static void BeginScene(OrthographicCamera& camera);
 		static void EndScene();
