@@ -8,6 +8,7 @@ namespace Paper
 	{
 	public:
 		OrthographicCamera(float l, float r, float t, float b);
+		void SetProjection(float l, float r, float t, float b);
 
 		void SetPosition(const glm::vec3& pos) { m_Position = pos; RecalculateVP(); }
 		void SetRotation(float rotation) { m_Rotation = rotation; RecalculateVP(); }

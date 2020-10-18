@@ -6,9 +6,15 @@
 
 namespace Paper
 {
-	OrthographicCamera::OrthographicCamera(float l, float r, float t, float b)
-		: m_ProjectionMatrix(glm::ortho(l, r, t, b, -1.0f, 1.0f)), m_ViewMatrix(glm::mat4(1.0f))
+	OrthographicCamera::OrthographicCamera(float l, float r, float b, float t)
+		: m_ProjectionMatrix(glm::ortho(l, r, b, t, -1.0f, 1.0f)), m_ViewMatrix(glm::mat4(1.0f))
 	{
+		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
+	}
+
+	void OrthographicCamera::SetProjection(float l, float r, float b, float t)
+	{
+		m_ProjectionMatrix = glm::ortho(l, r, b, t, -1.0f, 1.0f);
 		m_ViewProjectionMatrix = m_ProjectionMatrix * m_ViewMatrix;
 	}
 

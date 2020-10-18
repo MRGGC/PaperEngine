@@ -26,6 +26,8 @@
 #include "Paper/Renderer/OrthographicCamera.h"
 //---------------------------------------
 
+#include "Paper/OrthoCameraController.h"
+
 //----------Entry Point------------------
 #include "Paper/EntryPoint.h"
 //---------------------------------------
