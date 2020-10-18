@@ -11,6 +11,7 @@ namespace Paper
 	{
 	public:
 		static void Init();
+		static void OnWindowResize(uint32_t width, uint32_t height);
 
 		// TODO: Take Scene Parameters
 		static void BeginScene(OrthographicCamera& camera);

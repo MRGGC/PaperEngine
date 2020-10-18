@@ -20,6 +20,7 @@ namespace Paper
 		void OnEvent(Event& e);
 
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnWindowResize(WindowResizeEvent& e);
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
@@ -30,6 +31,8 @@ namespace Paper
 		Scope<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		LayerStack m_LayerStack;
+
+		bool m_Mimized = false;
 
 		float m_LastFrameTime = 0.0f;
 		bool m_Running = false;
