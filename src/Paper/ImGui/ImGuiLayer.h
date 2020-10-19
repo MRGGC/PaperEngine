@@ -7,7 +7,7 @@
 #include "Paper/Events/KeyEvent.h"
 #include "Paper/Events/MouseEvent.h"
 
-#include "Paper/Layer.h"
+#include "Paper/Core/Layer.h"
 
 namespace Paper
 {

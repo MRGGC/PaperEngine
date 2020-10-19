@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Core.h"
-#include "Window.h"
-#include "LayerStack.h"
-#include "ImGui/ImGuiLayer.h"
+#include "Paper/Core/Core.h"
+#include "Paper/Core/Window.h"
+#include "Paper/Core/LayerStack.h"
+#include "Paper/ImGui/ImGuiLayer.h"
 #include "Paper/Events/ApplicationEvent.h"
 
 #include "Paper/Core/Timestep.h"

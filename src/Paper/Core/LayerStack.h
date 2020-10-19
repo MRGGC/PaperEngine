@@ -1,8 +1,8 @@
 #pragma once
 
 #include "p_pch.h"
-#include "Paper/Core.h"
-#include "Layer.h"
+#include "Paper/Core/Core.h"
+#include "Paper/Core/Layer.h"
 
 namespace Paper
 {

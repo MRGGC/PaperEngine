@@ -16,7 +16,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "Paper/Log.h"
+#include "Paper/Core/Log.h"
 
 #if defined(_MSC_VER)
 	#include <Windows.h>

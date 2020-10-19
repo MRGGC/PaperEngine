@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Paper/Input.h"
+#include "Paper/Core/Input.h"
 
 namespace Paper
 {

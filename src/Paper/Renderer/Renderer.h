@@ -1,9 +1,9 @@
 #pragma once
 
-#include "RenderCommand.h"
+#include "Paper/Renderer/RenderCommand.h"
 
-#include "OrthographicCamera.h"
-#include "Shader.h"
+#include "Paper/Renderer/OrthographicCamera.h"
+#include "Paper/Renderer/Shader.h"
 
 namespace Paper
 {

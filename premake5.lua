@@ -33,10 +33,10 @@ project "PaperEngine"
 
 	defines { "PENGINE_BUILD", "PAPER_ENABLE_ASSERTS", "PENGINE_STATIC_LINK", "GLFW_INCLUDE_NONE" }
 
-	postbuildcommands
-	{
-		("{COPY} %{cfg.buildtarget.relpath} %{wks.location}/build/bin/" .. outputdir .. "/Sandbox/")
-	}
+	-- postbuildcommands
+	-- {
+	-- 	("{COPY} %{cfg.buildtarget.relpath} %{wks.location}/build/bin/" .. outputdir .. "/Sandbox/")
+	-- }
 	postbuildmessage "Copied libs"
 
 	filter "configurations:Debug"

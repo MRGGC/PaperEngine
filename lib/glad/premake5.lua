@@ -17,11 +17,6 @@ project "glad"
     {
         "include"
     }
-    
-	postbuildcommands
-	{
-		("{COPY} %{cfg.buildtarget.relpath} %{wks.location}/build/bin/" .. outputdir .. "/Sandbox/")
-	}
 
     filter "system:windows"
         systemversion "latest"

@@ -1,8 +1,8 @@
 #include "p_pch.h"
 
-#include "Application.h"
-#include "Log.h"
-#include "Paper/Input.h"
+#include "Paper/Core/Application.h"
+#include "Paper/Core/Log.h"
+#include "Paper/Core/Input.h"
 #include "Paper/Events/ApplicationEvent.h"
 
 #include "Paper/Renderer/Renderer.h"

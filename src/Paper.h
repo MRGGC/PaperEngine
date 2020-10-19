@@ -2,15 +2,15 @@
 
 // For Paper Engine Apps usage
 
-#include "Paper/Application.h"
+#include "Paper/Core/Application.h"
 
-#include "Paper/Layer.h"
-#include "Paper/Log.h"
+#include "Paper/Core/Layer.h"
+#include "Paper/Core/Log.h"
 #include "Paper/Core/Timestep.h"
 
-#include "Paper/Input.h"
-#include "Paper/KeyCodes.h"
-#include "Paper/MouseButtonCodes.h"
+#include "Paper/Core/Input.h"
+#include "Paper/Core/KeyCodes.h"
+#include "Paper/Core/MouseButtonCodes.h"
 
 #include "Paper/ImGui/ImGuiLayer.h"
 
@@ -26,8 +26,8 @@
 #include "Paper/Renderer/OrthographicCamera.h"
 //---------------------------------------
 
-#include "Paper/OrthoCameraController.h"
+#include "Paper/Renderer/OrthoCameraController.h"
 
 //----------Entry Point------------------
-#include "Paper/EntryPoint.h"
+#include "Paper/Core/EntryPoint.h"
 //---------------------------------------

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Paper/Core.h"
+#include "Paper/Core/Core.h"
 #include <glm/glm.hpp>
 #include "VertexArray.h"
 

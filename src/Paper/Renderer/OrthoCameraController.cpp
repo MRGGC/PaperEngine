@@ -1,9 +1,9 @@
 #include "p_pch.h"
 #include "OrthoCameraController.h"
 
-#include "Paper/Input.h"
-#include "Paper/KeyCodes.h"
-#include "Paper/MouseButtonCodes.h"
+#include "Paper/Core/Input.h"
+#include "Paper/Core/KeyCodes.h"
+#include "Paper/Core/MouseButtonCodes.h"
 
 namespace Paper 
 {

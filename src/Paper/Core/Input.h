@@ -1,6 +1,6 @@
 #include "p_pch.h"
 
-#include "Paper/Core.h"
+#include "Paper/Core/Core.h"
 
 namespace Paper
 {

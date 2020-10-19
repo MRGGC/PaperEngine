@@ -2,7 +2,7 @@
 #include "LinuxInput.h"
 
 #include <GLFW/glfw3.h>
-#include "Paper/Application.h"
+#include "Paper/Core/Application.h"
 
 namespace Paper
 {
