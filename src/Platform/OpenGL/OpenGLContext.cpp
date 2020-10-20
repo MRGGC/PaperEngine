@@ -22,6 +22,15 @@ namespace Paper
 		PAPER_CORE_INFO("--Vendor: {0}", glGetString(GL_VENDOR));
 		PAPER_CORE_INFO("--Renderer: {0}", glGetString(GL_RENDERER));
 		PAPER_CORE_INFO("--Version: {0}", glGetString(GL_VERSION));
+
+		#ifdef PAPER_ENABLE_ASSERTS
+			int version_major;
+			int version_minor;
+			glGetIntegerv(GL_MAJOR_VERSION, &version_major);
+			glGetIntegerv(GL_MINOR_VERSION, &version_minor);
+
+			PAPER_CORE_ASSERT(version_major > 3 || (version_major == 3 && version_minor >= 3), "PaperEngine requires >=OpenGL 3.3");
+		#endif
 	}
 
 	void OpenGLContext::SwapBuffers()

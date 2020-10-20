@@ -7,7 +7,7 @@
 
 namespace Paper
 {
-	VertexArray* VertexArray::Create()
+	Ref<VertexArray> VertexArray::Create()
 	{
 		switch (Renderer::GetAPI())
 		{
@@ -16,7 +16,7 @@ namespace Paper
 				return nullptr;
 			}
 			case RendererAPI::API::OpenGL: {
-				return new OpenGLVertexArray();
+				return std::make_shared<OpenGLVertexArray>();
 			}
 		}
 

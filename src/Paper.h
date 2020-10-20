@@ -16,6 +16,7 @@
 
 //----------Renderer---------------------
 #include "Paper/Renderer/Renderer.h"
+#include "Paper/Renderer/Renderer2D.h"
 #include "Paper/Renderer/RenderCommand.h"
 
 #include "Paper/Renderer/Buffer.h"
@@ -27,7 +28,3 @@
 //---------------------------------------
 
 #include "Paper/Renderer/OrthoCameraController.h"
-
-//----------Entry Point------------------
-#include "Paper/Core/EntryPoint.h"
-//---------------------------------------
