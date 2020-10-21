@@ -14,6 +14,8 @@ namespace Paper
 
 	void OpenGLContext::Init()
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		glfwMakeContextCurrent(m_WindowHandle);
 		int success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 		PAPER_CORE_ASSERT(success, "Glad not Initialized!");
@@ -35,6 +37,8 @@ namespace Paper
 
 	void OpenGLContext::SwapBuffers()
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		glfwSwapBuffers(m_WindowHandle);
 	}
 }

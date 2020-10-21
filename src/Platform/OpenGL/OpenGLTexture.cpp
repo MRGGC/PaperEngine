@@ -11,6 +11,8 @@ namespace Paper
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
 		: m_Width(width), m_Height(height), m_InternalFormat(GL_RGBA8), m_DataFormat(GL_RGBA)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		glGenTextures(1, &m_RendererID);
 		glBindTexture(GL_TEXTURE_2D, m_RendererID);
 
@@ -24,9 +26,16 @@ namespace Paper
 	OpenGLTexture2D::OpenGLTexture2D(const std::string& path)
 		: m_Path(path)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
-		stbi_uc* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+		stbi_uc* data = nullptr;
+		{
+			PAPER_PROFILE_SCOPE("stbi_load - OpenGLTexture2D::OpenGLTexture2D(const std::string&)");
+
+			data = stbi_load(path.c_str(), &width, &height, &channels, 0);
+		}
 		PAPER_CORE_ASSERT(data, "Failed to load image!");
 
 		m_Width = width;
@@ -61,11 +70,15 @@ namespace Paper
 
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		glDeleteTextures(1, &m_RendererID);
 	}
 
 	void OpenGLTexture2D::SetData(void* data, uint32_t size) // Size for other Graphics APIs
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		uint32_t bpp = m_DataFormat == GL_RGBA ? 4 : 3; // bytes per pixel
 		PAPER_CORE_ASSERT(size == m_Width * m_Height * bpp, "Data must be the entire Texture!");
 
@@ -75,6 +88,8 @@ namespace Paper
 
 	void OpenGLTexture2D::Bind(uint32_t slot) const
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		glActiveTexture(GL_TEXTURE0 + slot);
 		glBindTexture(GL_TEXTURE_2D, m_RendererID);
 	}

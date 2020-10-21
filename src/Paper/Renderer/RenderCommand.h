@@ -9,6 +9,8 @@ namespace Paper
 	public:
 		inline static void Init()
 		{
+			PAPER_PROFILE_FUNCTION();
+
 			s_RendererAPI->Init();
 		}
 

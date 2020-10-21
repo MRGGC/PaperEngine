@@ -16,6 +16,8 @@ namespace Paper
 	
 	void OrthoCameraController::OnUpdate(Timestep dt)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		if (Input::IsKeyPressed(PAPER_KEY_A))
 			m_CameraPos.x -= m_CameraTranslationSpeed * dt;
 		else if (Input::IsKeyPressed(PAPER_KEY_D))
@@ -43,6 +45,8 @@ namespace Paper
 	
 	void OrthoCameraController::OnEvent(Event& event)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(event);
 
 		dispatcher.Dispatch<MouseScrolledEvent>(PAPER_BIND_EVENT_FN(OrthoCameraController::OnMouseScrolled));
@@ -51,6 +55,8 @@ namespace Paper
 
 	bool OrthoCameraController::OnMouseScrolled(MouseScrolledEvent& e)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		const float k = 0.25f;
 		m_ZoomLevel -= e.GetOffsetY() * k;
 		m_ZoomLevel = std::max(m_ZoomLevel, k);
@@ -62,6 +68,8 @@ namespace Paper
 
 	bool OrthoCameraController::OnWindowResized(WindowResizeEvent& e)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		m_AspectRatio = (float) e.GetWidth() / (float) e.GetHeight();
 		m_Camera.SetProjection(-m_AspectRatio * m_ZoomLevel, m_AspectRatio * m_ZoomLevel, -m_ZoomLevel, m_ZoomLevel);
 

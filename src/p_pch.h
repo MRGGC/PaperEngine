@@ -17,6 +17,7 @@
 #include <unordered_set>
 
 #include "Paper/Core/Log.h"
+#include "Paper/Debug/ProfileIntstrument.h"
 
 #if defined(_MSC_VER)
 	#include <Windows.h>

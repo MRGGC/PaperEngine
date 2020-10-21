@@ -33,6 +33,8 @@ namespace Paper
 
 	void LinuxWindow::Init(const WindowProps& props)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		m_Data.Title = props.Title;
 		m_Data.Width = props.Width;
 		m_Data.Height = props.Height;
@@ -140,12 +142,16 @@ namespace Paper
 
 	void LinuxWindow::OnUpdate()
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	}
 
 	void LinuxWindow::SetVSync(bool enabled)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		if (enabled)
 			glfwSwapInterval(1);
 		else
@@ -161,6 +167,8 @@ namespace Paper
 
 	void LinuxWindow::Shutdown()
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(m_Window);
 	}
 }

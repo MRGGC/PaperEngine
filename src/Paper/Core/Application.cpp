@@ -15,6 +15,8 @@ namespace Paper {
 
 	Application::Application()
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		// TODO: Only 1 instance of application is possible right now. Change it!
 		PAPER_CORE_ASSERT(!s_Instance, "Paper Application already Exists!");
 		s_Instance = this;
@@ -32,20 +34,27 @@ namespace Paper {
 
 	Application::~Application()
 	{
+		PAPER_PROFILE_FUNCTION();
 	}
 
 	void Application::PushLayer(Layer* layer)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		m_LayerStack.PushLayer(layer);
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		m_LayerStack.PushOverlay(overlay);
 	}
 
 	void Application::OnEvent(Event& e)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(PAPER_BIND_EVENT_FN(Application::OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(PAPER_BIND_EVENT_FN(Application::OnWindowResize));
@@ -67,6 +76,8 @@ namespace Paper {
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		if (e.GetWidth() == 0 || e.GetHeight() == 0) {
 			m_Mimized = true;
 			return false;
@@ -80,20 +91,30 @@ namespace Paper {
 
 	void Application::Run()
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		while (m_Running)
 		{
+			PAPER_PROFILE_SCOPE("Run Loop");
+
 			float time = glfwGetTime(); // Temporary: Until Tying Time to the Platform
 			Timestep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
 			if (!m_Mimized) {
-				for (Layer* layer : m_LayerStack)
-					layer->OnUpdate(timestep);
+				{
+					PAPER_PROFILE_SCOPE("LayerStack OnUpdate");
+					for (Layer* layer : m_LayerStack)
+						layer->OnUpdate(timestep);
+				}
 			}
 
 			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRenderer();
+			{
+				PAPER_PROFILE_SCOPE("LayerStack ImGuiRenderer");
+				for (Layer* layer : m_LayerStack)
+					layer->OnImGuiRenderer();
+			}
 			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();

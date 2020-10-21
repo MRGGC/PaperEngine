@@ -22,6 +22,8 @@ namespace Paper
 	OpenGLShader::OpenGLShader(const std::string& name, const std::string& vertexSrc, const std::string& fragmentSrc)
 		: m_Name(name)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> sources;
 		sources[GL_VERTEX_SHADER] = vertexSrc;
 		sources[GL_FRAGMENT_SHADER] = fragmentSrc;
@@ -31,6 +33,8 @@ namespace Paper
 
 	OpenGLShader::OpenGLShader(const std::string& path)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		std::string	shaderSource = ReadFile(path);
 		std::unordered_map<GLenum, std::string> shaderSources = PreProcess(shaderSource);
 		Compile(shaderSources);
@@ -47,11 +51,15 @@ namespace Paper
 
 	OpenGLShader::~OpenGLShader()
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		glDeleteProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Compile(const std::unordered_map<GLenum, std::string>& shaderSources)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		uint32_t program = glCreateProgram();
 
 		PAPER_CORE_ASSERT(shaderSources.size() <= 3, "ShaderSources size is greater than 3!");
@@ -126,6 +134,8 @@ namespace Paper
 
 	std::unordered_map<GLenum, std::string> OpenGLShader::PreProcess(const std::string& source)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		std::unordered_map<GLenum, std::string> shaderSources;
 
 		const char* typeToken = "#type";
@@ -154,6 +164,8 @@ namespace Paper
 
 	std::string OpenGLShader::ReadFile(const std::string& filepath)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		std::string result;
 		std::ifstream input(filepath, std::ios::in | std::ios::binary);
 		if (input) {
@@ -214,31 +226,43 @@ namespace Paper
 
 	void OpenGLShader::SetInt(const std::string& name, int value)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		UploadUniformInt(name, value);
 	}
 
 	void OpenGLShader::SetFloat3(const std::string& name, const glm::vec3& value)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		UploadUniformFloat3(name, value);
 	}
 
 	void OpenGLShader::SetFloat4(const std::string& name, const glm::vec4& value)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		UploadUniformFloat4(name, value);
 	}
 
 	void OpenGLShader::SetMat4(const std::string& name, const glm::mat4& value)
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		UploadUniformMat4(name, value);
 	}
 
 	void OpenGLShader::Bind() const
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		glUseProgram(m_RendererID);
 	}
 
 	void OpenGLShader::Unbind() const
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		glUseProgram(0);
 	}
 }

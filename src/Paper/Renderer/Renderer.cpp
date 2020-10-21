@@ -10,6 +10,8 @@ namespace Paper
 
 	void Renderer::Init()
 	{
+		PAPER_PROFILE_FUNCTION();
+
 		RenderCommand::Init();
 		Renderer2D::Init();
 	}
