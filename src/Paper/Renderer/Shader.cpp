@@ -16,7 +16,7 @@ namespace Paper
 				return nullptr;
 			}
 			case RendererAPI::API::OpenGL: {
-				return std::make_shared<OpenGLShader>(name, vertexSrc, fragmentSrc);
+				return CreateRef<OpenGLShader>(name, vertexSrc, fragmentSrc);
 			}
 		}
 
@@ -33,7 +33,7 @@ namespace Paper
 				return nullptr;
 			}
 			case RendererAPI::API::OpenGL: {
-				return std::make_shared<OpenGLShader>(path);
+				return CreateRef<OpenGLShader>(path);
 			}
 		}
 

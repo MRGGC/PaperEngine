@@ -123,7 +123,7 @@ namespace Paper
 	};
 }
 
-#define PAPER_PROFILE 1
+#define PAPER_PROFILE 0
 #if PAPER_PROFILE
 	#define PAPER_PROFILE_BEGIN_SESSION(name, filepath) Paper::Instrumentor::Get().BeginSession(name, filepath)
 	#define PAPER_PROFILE_END_SESSION() Paper::Instrumentor::Get().EndSession()

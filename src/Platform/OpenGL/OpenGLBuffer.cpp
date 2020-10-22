@@ -10,6 +10,15 @@ namespace Paper
 	/* ------------Vertex Buffer------------ */
 	/* ------------------------------------- */
 
+	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)
+	{
+		PAPER_PROFILE_FUNCTION();
+
+		glGenBuffers(1, &m_RendererID);
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferData(GL_ARRAY_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+	}
+
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
 	{
 		PAPER_PROFILE_FUNCTION();
@@ -24,6 +33,12 @@ namespace Paper
 		PAPER_PROFILE_FUNCTION();
 
 		glDeleteBuffers(1, &m_RendererID);
+	}
+	
+	void OpenGLVertexBuffer::SetData(const void* data, uint32_t size)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 	}
 
 	void OpenGLVertexBuffer::Bind() const
