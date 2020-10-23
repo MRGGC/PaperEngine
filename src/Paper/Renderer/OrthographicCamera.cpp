@@ -7,7 +7,7 @@
 namespace Paper
 {
 	OrthographicCamera::OrthographicCamera(float l, float r, float b, float t)
-		: m_ProjectionMatrix(glm::ortho(l, r, b, t, -1.0f, 1.0f)), m_ViewMatrix(glm::mat4(1.0f))
+		: m_Bounds(l, r, b, t), m_ProjectionMatrix(glm::ortho(l, r, b, t, -1.0f, 1.0f)), m_ViewMatrix(glm::mat4(1.0f))
 	{
 		PAPER_PROFILE_FUNCTION();
 

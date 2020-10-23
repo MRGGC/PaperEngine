@@ -25,6 +25,8 @@
 #include "Paper/Renderer/Texture.h"
 
 #include "Paper/Renderer/OrthographicCamera.h"
+
+#include "Paper/Renderer/ParticleSystem.h"
 //---------------------------------------
 
 #include "Paper/Renderer/OrthoCameraController.h"

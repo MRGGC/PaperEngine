@@ -21,7 +21,7 @@ namespace Paper
 
 	struct Renderer2DStorage
 	{
-		static const uint32_t MaxQuads = 20000;
+		static const uint32_t MaxQuads = 10000;
 		static const uint32_t MaxVerticies = MaxQuads * 4;
 		static const uint32_t MaxIndicies = MaxQuads * 6;
 		static const uint32_t MaxTextureSlots = 32; // TODO: Retrieve from the GPU
@@ -221,7 +221,7 @@ namespace Paper
 		const float tilingFactor = 1.0f;
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
-		                      glm::rotate(glm::mat4(1.0f), glm::radians(angle), {0.0f, 0.0f, 1.0f}) *
+		                      glm::rotate(glm::mat4(1.0f), angle, {0.0f, 0.0f, 1.0f}) *
 							  glm::scale(glm::mat4(1.0f), {size.x, size.y, 1.0f});
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];
@@ -335,6 +335,11 @@ namespace Paper
 		DrawRotatedQuad({position.x, position.y, 0.0f}, size, texture, angle, 1.0f, glm::vec4(1.0f));
 	}
 
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float angle, float tilingFactor, const glm::vec4& tint)
+	{
+		DrawRotatedQuad({position.x, position.y, 0.0f}, size, texture, angle, tilingFactor, tint);
+	}
+
 	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float angle, float tilingFactor, const glm::vec4& tint)
 	{
 		PAPER_PROFILE_FUNCTION();
@@ -361,7 +366,7 @@ namespace Paper
 		}
 
 		glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
-		                      glm::rotate(glm::mat4(1.0f), glm::radians(angle), {0.0f, 0.0f, 1.0f}) *
+		                      glm::rotate(glm::mat4(1.0f), angle, {0.0f, 0.0f, 1.0f}) *
 							  glm::scale(glm::mat4(1.0f), {size.x, size.y, 1.0f});
 
 		s_Data.QuadVertexBufferPtr->Position = transform * s_Data.QuadVertexPositions[0];
