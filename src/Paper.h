@@ -23,6 +23,7 @@
 #include "Paper/Renderer/VertexArray.h"
 #include "Paper/Renderer/Shader.h"
 #include "Paper/Renderer/Texture.h"
+#include "Paper/Renderer/SubTexture2D.h"
 
 #include "Paper/Renderer/OrthographicCamera.h"
 
