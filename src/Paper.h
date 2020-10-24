@@ -19,6 +19,8 @@
 #include "Paper/Renderer/Renderer2D.h"
 #include "Paper/Renderer/RenderCommand.h"
 
+#include "Paper/Renderer/TextRenderer.h"
+
 #include "Paper/Renderer/Buffer.h"
 #include "Paper/Renderer/VertexArray.h"
 #include "Paper/Renderer/Shader.h"

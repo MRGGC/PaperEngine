@@ -23,7 +23,7 @@ namespace Paper
 		OrthographicCamera(float l, float r, float b, float t);
 
 		void SetBounds(const OrthographicCameraBounds& bounds) { m_Bounds = bounds; };
-		const OrthographicCameraBounds& GetBounds() { return m_Bounds; }
+		const OrthographicCameraBounds& GetBounds() const { return m_Bounds; }
 
 		void SetProjection(float l, float r, float b, float t);
 

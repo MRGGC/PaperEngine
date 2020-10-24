@@ -42,8 +42,10 @@ namespace Paper
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float angle, float tilingFactor, const glm::vec4& tint = glm::vec4(1.0f));
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float angle, float tilingFactor, const glm::vec4& tint = glm::vec4(1.0f));
 
-		// Stats
+		// Text
+		static void WriteText(const std::string& text, const glm::vec3& position, float scale, const glm::vec4& color);
 
+		// Stats
 		struct Statistics
 		{
 			uint32_t DrawCalls = 0;

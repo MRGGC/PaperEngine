@@ -1,10 +1,12 @@
 #include "p_pch.h"
 #include "Renderer2D.h"
 
+#include "Paper/Core/Application.h"
+
 #include "VertexArray.h"
 #include "Shader.h"
-
 #include "RenderCommand.h"
+#include "TextRenderer.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -492,6 +494,33 @@ namespace Paper
 		s_Data.QuadIndexCount += 6;
 
 		s_Data.Stats.QuadCount++;
+	}
+	
+	void Renderer2D::WriteText(const std::string& text, const glm::vec3& position, float scale, const glm::vec4& color)
+	{
+		const Ref<Texture2D>& FontAtlas = TextRenderer::GetTexture();
+
+		const float k = 0.01f;
+		scale *= k;
+
+		float offsetX = 0.0f;
+		for (uint32_t i = 0; i < text.length(); i++) {
+			unsigned char c = text[i];
+			GlyphInfo& Character = TextRenderer::GetGlyphInfos()[(int)c];
+
+			glm::vec2 min = { Character.Top.x / FontAtlas->GetWidth(), (FontAtlas->GetHeight() - Character.Bottom.y) / FontAtlas->GetHeight() };
+			glm::vec2 max = { Character.Bottom.x / FontAtlas->GetWidth(), (FontAtlas->GetHeight() - Character.Top.y) / FontAtlas->GetHeight() };
+			Ref<SubTexture2D> CharTexture = CreateRef<SubTexture2D>(FontAtlas, min, max);
+
+			float w = Character.Bottom.x - Character.Top.x, h = Character.Bottom.y - Character.Top.y;
+			glm::vec2 size = { w * scale, h * scale };
+
+			glm::vec3 newPos = {scale * (position.x + w/2 + Character.Offset.x + offsetX), scale * (position.y + h/2 + (Character.Offset.y - h)), position.z};
+
+			offsetX += Character.Advance;
+
+			DrawQuad(newPos, size, CharTexture, 1.0f, color);
+		}
 	}
 
 	void Renderer2D::ResetStats()
