@@ -7,12 +7,6 @@
 namespace Paper
 {
 
-	// struct glyph_info {
-	// 	int x0, y0, x1, y1;	// coords of glyph in the texture atlas
-	// 	int x_off, y_off;   // left & top bearing when rendering
-	// 	int advance;        // x advance when rendering
-	// };
-
 	void TextRenderer::Init()
 	{
 		PAPER_PROFILE_FUNCTION();

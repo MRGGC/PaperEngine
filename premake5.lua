@@ -1,6 +1,11 @@
-include "lib/glfw"
-include "lib/glad"
-include "lib/imgui"
+group "Dependencies"
+	include "lib/glfw"
+	include "lib/glad"
+	include "lib/imgui"
+	include "lib/libogg"
+	include "lib/openal-soft"
+	include "lib/vorbis"
+group ""
 
 project "PaperEngine"
 	kind "StaticLib"
@@ -19,6 +24,10 @@ project "PaperEngine"
 	IncludeDir["glm"] = "lib/glm"
 	IncludeDir["stb_image"] = "lib/stb_image"
 	IncludeDir["freetype"] = "lib/freetype/include"
+	IncludeDir["openal_soft"] = "lib/openal-soft/include"
+	IncludeDir["libogg"] = "lib/libogg/include"
+	IncludeDir["vorbis"] = "lib/vorbis/include"
+	IncludeDir["minimp3"] = "lib/minimp3"
 
 	pchheader "p_pch.h"
 	pchsource "src/p_pch.cpp"
@@ -41,7 +50,13 @@ project "PaperEngine"
 		"%{IncludeDir.imgui}", 
 		"%{IncludeDir.glm}", 
 		"%{IncludeDir.stb_image}", 
-		"%{IncludeDir.freetype}" 
+		"%{IncludeDir.freetype}",
+		"%{IncludeDir.openal_soft}",
+		"lib/openal-soft/src",
+		"lib/openal-soft/src/common",
+		"%{IncludeDir.libogg}",
+		"%{IncludeDir.vorbis}",
+		"%{IncludeDir.minimp3}"
 	}
 
 	filter "system:windows"
@@ -50,7 +65,15 @@ project "PaperEngine"
 		defines { "_WINDLL" }
 	filter { }
 
-	defines { "PENGINE_BUILD", "PAPER_ENABLE_ASSERTS", "PENGINE_STATIC_LINK", "GLFW_INCLUDE_NONE" }
+	defines { 
+		"PENGINE_BUILD", 
+		"PAPER_ENABLE_ASSERTS", 
+		"PENGINE_STATIC_LINK", 
+		"GLFW_INCLUDE_NONE",
+		"AL_LIBTYPE_STATIC"
+	}
+
+	links { "openal-soft", "vorbis" }
 
 	-- postbuildcommands
 	-- {

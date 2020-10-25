@@ -32,4 +32,8 @@
 #include "Paper/Renderer/ParticleSystem.h"
 //---------------------------------------
 
+//-----------Audio-----------------------
+#include "Paper/Audio/CoreAudio.h"
+//---------------------------------------
+
 #include "Paper/Renderer/OrthoCameraController.h"
