@@ -52,8 +52,8 @@ project "PaperEngine"
 		"%{IncludeDir.stb_image}", 
 		"%{IncludeDir.freetype}",
 		"%{IncludeDir.openal_soft}",
-		"lib/openal-soft/src",
-		"lib/openal-soft/src/common",
+		"lib/openal-soft",
+		"lib/openal-soft/common",
 		"%{IncludeDir.libogg}",
 		"%{IncludeDir.vorbis}",
 		"%{IncludeDir.minimp3}"

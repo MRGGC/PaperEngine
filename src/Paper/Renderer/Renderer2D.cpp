@@ -19,6 +19,8 @@ namespace Paper
 		glm::vec2 TexCoord;
 		float TexIndex;
 		float TilingFactor;
+		glm::vec2 LocalCoord;
+		bool EnableRoundCorners;
 	};
 
 	struct Renderer2DStorage
@@ -42,6 +44,7 @@ namespace Paper
 		uint32_t TextureSlotIndex = 1; // 0 = white texture
 
 		glm::vec4 QuadVertexPositions[4];
+		glm::vec2 QuadLocalCoords[4];
 
 		Renderer2D::Statistics Stats;		
 	};
@@ -61,7 +64,9 @@ namespace Paper
 			{ ShaderDataType::Float4, "a_Color" },
 			{ ShaderDataType::Float2, "a_TexCoord" },
 			{ ShaderDataType::Float, "a_TexIndex" },
-			{ ShaderDataType::Float, "a_TilingFactor" }
+			{ ShaderDataType::Float, "a_TilingFactor" },
+			{ ShaderDataType::Float2, "a_LocalCoord" },
+			{ ShaderDataType::Float, "a_EnableRoundCorners" }
 		};
 		s_Data.QuadVertexBuffer->SetLayout(SquareBufferLayout);
 		s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
@@ -106,6 +111,11 @@ namespace Paper
 		s_Data.QuadVertexPositions[1] = { 0.5f, -0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[2] = { 0.5f, 0.5f, 0.0f, 1.0f };
 		s_Data.QuadVertexPositions[3] = { -0.5f, 0.5f, 0.0f, 1.0f };
+
+		s_Data.QuadLocalCoords[0] = { -1.0f, -1.0f };
+		s_Data.QuadLocalCoords[1] = { 1.0f, -1.0f };
+		s_Data.QuadLocalCoords[2] = { 1.0f, 1.0f };
+		s_Data.QuadLocalCoords[3] = { -1.0f, 1.0f };
 	}
 
 	void Renderer2D::Shutdown()
@@ -159,12 +169,12 @@ namespace Paper
 	} 
 
 	// Primitives
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, bool ellipsed)
 	{
-		DrawQuad({position.x, position.y, 0.0f}, size, color);
+		DrawQuad({position.x, position.y, 0.0f}, size, color, ellipsed);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, bool ellipsed)
 	{
 		PAPER_PROFILE_FUNCTION();
 
@@ -196,6 +206,8 @@ namespace Paper
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->LocalCoord = s_Data.QuadLocalCoords[i];
+			s_Data.QuadVertexBufferPtr->EnableRoundCorners = ellipsed;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -204,12 +216,12 @@ namespace Paper
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, float angle)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const glm::vec4& color, float angle, bool ellipsed)
 	{
-		DrawRotatedQuad({position.x, position.y, 0.0f}, size, color, angle);
+		DrawRotatedQuad({position.x, position.y, 0.0f}, size, color, angle, ellipsed);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, float angle)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color, float angle, bool ellipsed)
 	{
 		PAPER_PROFILE_FUNCTION();
 
@@ -237,6 +249,8 @@ namespace Paper
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = texIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->LocalCoord = s_Data.QuadLocalCoords[i];
+			s_Data.QuadVertexBufferPtr->EnableRoundCorners = ellipsed;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -245,17 +259,17 @@ namespace Paper
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, bool ellipsed)
 	{
-		DrawQuad({position.x, position.y, 0.0f}, size, texture);
+		DrawQuad({position.x, position.y, 0.0f}, size, texture, ellipsed);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, bool ellipsed)
 	{
-		DrawQuad(position, size, texture, 1.0f, glm::vec4(1.0f));
+		DrawQuad(position, size, texture, 1.0f, glm::vec4(1.0f), ellipsed);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tint)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float tilingFactor, const glm::vec4& tint, bool ellipsed)
 	{
 		PAPER_PROFILE_FUNCTION();
 
@@ -302,6 +316,8 @@ namespace Paper
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->LocalCoord = s_Data.QuadLocalCoords[i];
+			s_Data.QuadVertexBufferPtr->EnableRoundCorners = ellipsed;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -310,17 +326,17 @@ namespace Paper
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture)
+	void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, bool ellipsed)
 	{
-		DrawQuad({position.x, position.y, 0.0f}, size, subtexture);
+		DrawQuad({position.x, position.y, 0.0f}, size, subtexture, ellipsed);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, bool ellipsed)
 	{
-		DrawQuad(position, size, subtexture, 1.0f, glm::vec4(1.0f));
+		DrawQuad(position, size, subtexture, 1.0f, glm::vec4(1.0f), ellipsed);
 	}
 
-	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor, const glm::vec4& tint)
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float tilingFactor, const glm::vec4& tint, bool ellipsed)
 	{
 		PAPER_PROFILE_FUNCTION();
 
@@ -361,6 +377,8 @@ namespace Paper
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->LocalCoord = s_Data.QuadLocalCoords[i];
+			s_Data.QuadVertexBufferPtr->EnableRoundCorners = ellipsed;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -369,22 +387,22 @@ namespace Paper
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float angle)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float angle, bool ellipsed)
 	{
-		DrawRotatedQuad({position.x, position.y, 0.0f}, size, texture, angle);
+		DrawRotatedQuad({position.x, position.y, 0.0f}, size, texture, angle, ellipsed);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float angle)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float angle, bool ellipsed)
 	{
-		DrawRotatedQuad({position.x, position.y, 0.0f}, size, texture, angle, 1.0f, glm::vec4(1.0f));
+		DrawRotatedQuad({position.x, position.y, 0.0f}, size, texture, angle, 1.0f, glm::vec4(1.0f), ellipsed);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float angle, float tilingFactor, const glm::vec4& tint)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const Ref<Texture2D>& texture, float angle, float tilingFactor, const glm::vec4& tint, bool ellipsed)
 	{
-		DrawRotatedQuad({position.x, position.y, 0.0f}, size, texture, angle, tilingFactor, tint);
+		DrawRotatedQuad({position.x, position.y, 0.0f}, size, texture, angle, tilingFactor, tint, ellipsed);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float angle, float tilingFactor, const glm::vec4& tint)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const Ref<Texture2D>& texture, float angle, float tilingFactor, const glm::vec4& tint, bool ellipsed)
 	{
 		PAPER_PROFILE_FUNCTION();
 
@@ -427,6 +445,8 @@ namespace Paper
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->LocalCoord = s_Data.QuadLocalCoords[i];
+			s_Data.QuadVertexBufferPtr->EnableRoundCorners = ellipsed;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
@@ -435,22 +455,22 @@ namespace Paper
 		s_Data.Stats.QuadCount++;
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float angle)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float angle, bool ellipsed)
 	{
-		DrawRotatedQuad({position.x, position.y, 0.0f}, size, subtexture, angle);
+		DrawRotatedQuad({position.x, position.y, 0.0f}, size, subtexture, angle, ellipsed);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float angle)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float angle, bool ellipsed)
 	{
-		DrawRotatedQuad(position, size, subtexture, angle, 1.0f, glm::vec4(1.0f));
+		DrawRotatedQuad(position, size, subtexture, angle, 1.0f, glm::vec4(1.0f), ellipsed);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float angle, float tilingFactor, const glm::vec4& tint)
+	void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float angle, float tilingFactor, const glm::vec4& tint, bool ellipsed)
 	{
-		DrawRotatedQuad({position.x, position.y, 0.0f}, size, subtexture, angle, 1.0f, glm::vec4(1.0f));
+		DrawRotatedQuad({position.x, position.y, 0.0f}, size, subtexture, angle, 1.0f, glm::vec4(1.0f), ellipsed);
 	}
 
-	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float angle, float tilingFactor, const glm::vec4& tint)
+	void Renderer2D::DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, const Ref<SubTexture2D>& subtexture, float angle, float tilingFactor, const glm::vec4& tint, bool ellipsed)
 	{
 		PAPER_PROFILE_FUNCTION();
 
@@ -488,19 +508,71 @@ namespace Paper
 			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
 			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
 			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->LocalCoord = s_Data.QuadLocalCoords[i];
+			s_Data.QuadVertexBufferPtr->EnableRoundCorners = ellipsed;
 			s_Data.QuadVertexBufferPtr++;
 		}
 
 		s_Data.QuadIndexCount += 6;
 
 		s_Data.Stats.QuadCount++;
+	}
+
+	void Renderer2D::DrawTriangle(const std::array<glm::vec3, 3>& positions, const glm::vec4& color)
+	{
+		constexpr float textureIndex = 0.0f;
+		constexpr float tilingFactor = 1.0f;
+		constexpr size_t triangleVertexCount = 3;
+
+		constexpr glm::vec2 textureCoords[triangleVertexCount] = {
+			{ 0.0f, 0.0f },
+			{ 0.5f, 1.0f },
+			{ 1.0f, 0.0f }
+		};
+
+		for (uint32_t i = 0; i < triangleVertexCount; i++) {
+			s_Data.QuadVertexBufferPtr->Position = positions[i];
+			s_Data.QuadVertexBufferPtr->Color = color;
+			s_Data.QuadVertexBufferPtr->TexCoord = textureCoords[i];
+			s_Data.QuadVertexBufferPtr->TexIndex = textureIndex;
+			s_Data.QuadVertexBufferPtr->TilingFactor = tilingFactor;
+			s_Data.QuadVertexBufferPtr->LocalCoord = s_Data.QuadLocalCoords[i];
+			s_Data.QuadVertexBufferPtr->EnableRoundCorners = false;
+			s_Data.QuadVertexBufferPtr++;
+		}
+
+		s_Data.QuadIndexCount += 3;
+
+		s_Data.Stats.QuadCount += 0.5;
+	}
+	
+	void Renderer2D::DrawEllipse(const glm::vec3& position, float radiusX, float radiusY, float angle)
+	{
+
+	}
+
+	void Renderer2D::DrawLine(const glm::vec2& pos1, const glm::vec2& pos2, float width, const glm::vec4& color)
+	{
+		DrawLine({pos1.x, pos1.y, 0.0f}, {pos2.x, pos2.y, 0.0f}, width, color);
+	}
+
+	void Renderer2D::DrawLine(const glm::vec3& pos1, const glm::vec3& pos2, float width, const glm::vec4& color)
+	{
+		constexpr float k = 0.01f;
+		width *= k;
+
+		glm::vec3 pos = { (pos1.x+pos2.x)/2, (pos1.y+pos2.y)/2, (pos1.z+pos2.z)/2 };
+		float height = glm::sqrt((pos2.x-pos1.x)*(pos2.x-pos1.x)+(pos2.y-pos1.y)*(pos2.y-pos1.y)+(pos2.z-pos1.z)*(pos2.z-pos1.z));
+		float angle = glm::atan((pos2.y-pos1.y)/(pos2.x-pos1.x)) - glm::pi<float>()/2;
+
+		DrawRotatedQuad(pos, { width, height }, color, angle);
 	}
 	
 	void Renderer2D::WriteText(const std::string& text, const glm::vec3& position, float scale, const glm::vec4& color)
 	{
 		const Ref<Texture2D>& FontAtlas = TextRenderer::GetTexture();
 
-		const float k = 0.01f;
+		const float k = 0.1f;
 		scale *= k;
 
 		float offsetX = 0.0f;
